@@ -17,4 +17,17 @@ function addPost(req,res)
 
 }
 
+async function reviewAdd(req,res){
+    let id = req.body.id
+    await postModel.findByIdAndUpdate(id,{reviewed:true})
+    res.redirect("/review")
+}
+async function reviewDelete(req,res){
+    let id = req.body.id
+    await postModel.findByIdAndDelete(id)
+    res.redirect("/review")
+}
+
 module.exports.addPost=addPost
+module.exports.reviewAdd = reviewAdd
+module.exports.reviewDelete = reviewDelete

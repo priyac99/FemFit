@@ -1,4 +1,5 @@
 let userModel=require("../models/user.js");
+let postModel=require("../models/post.js");
 let config = require("../config.json")
 let jwt = require("jsonwebtoken")
 function getLoginPage(req,res)
@@ -22,9 +23,10 @@ async function getProfilePage(req,res){
 }
 
 
-function getEmotionalWall(req,res)
+async function getEmotionalWall(req,res)
 {
-   res.render("cheerMeUp.ejs");
+   let posts =  await postModel.find({ reviewed: true })
+   res.render("cheerMeUp.ejs",{posts});
 }
 
 function getHomePage(req,res)
@@ -43,6 +45,16 @@ function addPost(req,res)
     res.render("addPost.ejs");
 }
 
+async function getReviewPage(req,res)
+{let {role} = jwt.verify(req.cookies.jwt,config.secretKey);
+    if(!req.body.logged) res.redirect("/login")
+    if(role!=="admin") res.redirect("/")
+
+   let posts =  await postModel.find({ reviewed: false })
+console.log(posts);
+    res.render("review.ejs",{posts});
+}
+
 
 module.exports.getProfilePage = getProfilePage
 module.exports.getLoginPage = getLoginPage
@@ -51,3 +63,5 @@ module.exports.getSignUpPage = getSignUpPage
 module.exports.getPageNotFound=getPageNotFound
 module.exports.getEmotionalWall=getEmotionalWall
 module.exports.addPost=addPost
+module.exports.getReviewPage=getReviewPage
+

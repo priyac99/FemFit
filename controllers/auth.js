@@ -4,6 +4,8 @@ let jwt=require('jsonwebtoken');
 var CryptoJS = require("crypto-js");
  
 
+
+
 function checkLogin(req,res,next)
 {   
     if(req.cookies.jwt){
@@ -78,7 +80,7 @@ async function login(req,res)
     
         if(originalText==userPassword) //if passwords match 
         {
-            let token=jwt.sign({email},config.secretKey,{expiresIn:"24h"});
+            let token=jwt.sign({email,role:user.role},config.secretKey,{expiresIn:"24h"});
             res.cookie("jwt",token);
             res.redirect("/profile")
         }

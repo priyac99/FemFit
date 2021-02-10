@@ -17,6 +17,7 @@ router.route("/notfound").get(viewController.getPageNotFound)
 router.route("/cheerMeUp").get(viewController.getEmotionalWall)
 
 router.route("/addPost").get(authController.checkLogin,viewController.addPost)
+router.route("/review").get(authController.checkLogin,viewController.getReviewPage)
 
 router.route("/").get(viewController.getHomePage)
 
