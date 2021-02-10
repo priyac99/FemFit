@@ -8,6 +8,8 @@ const viewRouter=require("./routers/view.js");
 const postRouter=require("./routers/post.js")
 const cookieParser=require('cookie-parser');
 
+app.use(express.static("./public"));
+
 
 mongoose();
 

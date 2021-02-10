@@ -104,6 +104,12 @@ async function login(req,res)
 
 }
 
+function logout(req,res){
+    res.clearCookie("jwt");
+    res.redirect("/")
+}
+
 module.exports.signup=signup;
 module.exports.login=login;
+module.exports.logout=logout;
 module.exports.checkLogin=checkLogin;

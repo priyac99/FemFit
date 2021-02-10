@@ -4,13 +4,15 @@ let config = require("../config.json")
 let jwt = require("jsonwebtoken")
 function getLoginPage(req,res)
 {
- res.render("login.ejs");
+    if(req.body.logged) res.redirect("/profile")
+ res.render("login.ejs",{logged:req.body.logged});
 }
 
 
 function getSignUpPage(req,res)
 {
-    res.render("signup.ejs");
+    if(req.body.logged) res.redirect("/profile")
+    res.render("signup.ejs",{logged:req.body.logged});
 }
 
 
@@ -19,30 +21,59 @@ async function getProfilePage(req,res){
 
     console.log(req.body);
     let user = await userModel.findOne({email})
-    res.render("profile.ejs",{user});
+    res.render("profile.ejs",{user,logged:req.body.logged});
 }
 
 
 async function getEmotionalWall(req,res)
 {
    let posts =  await postModel.find({ reviewed: true })
-   res.render("cheerMeUp.ejs",{posts});
+
+   if(posts.length<10)
+   {
+    res.render("cheerMeUp.ejs",{posts,logged:req.body.logged});
+   }
+   else
+   {
+       let cnt=0;
+       let mySet=new Set();
+       let selectedPosts=[]
+
+       while(cnt<10)
+       {
+           let idx=Math.floor(Math.random()*posts.length);
+
+           if(!mySet.has(idx))
+           {
+               cnt++;
+               selectedPosts.push(posts[idx]);
+               mySet.add(idx)
+
+           }
+
+       }
+       
+       res.render("cheerMeUp.ejs",{posts:selectedPosts,logged:req.body.logged});
+
+   }
+
+   
 }
 
 function getHomePage(req,res)
 {
-    res.render("index.ejs");
+    res.render("index.ejs",{logged:req.body.logged});
 }
 
 function getPageNotFound(req,res)
 {
-    res.render("notfound.ejs");
+    res.render("notfound.ejs",{logged:req.body.logged});
 }
 
 function addPost(req,res)
 {
     if(!req.body.logged) res.redirect("/login")
-    res.render("addPost.ejs");
+    res.render("addPost.ejs",{logged:req.body.logged});
 }
 
 async function getReviewPage(req,res)
@@ -52,7 +83,7 @@ async function getReviewPage(req,res)
 
    let posts =  await postModel.find({ reviewed: false })
 console.log(posts);
-    res.render("review.ejs",{posts});
+    res.render("review.ejs",{posts,logged:req.body.logged});
 }
 
 
