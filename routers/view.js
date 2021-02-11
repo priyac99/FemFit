@@ -8,8 +8,6 @@ router.use(authController.checkLogin);
 //Sign-up
 router.route("/signup").get(viewController.getSignUpPage)
 
-
-//Login
 router.route("/login").get(viewController.getLoginPage)
 
 router.route("/profile").get(viewController.getProfilePage)

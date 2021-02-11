@@ -2,9 +2,11 @@ let userModel=require("../models/user.js");
 let postModel=require("../models/post.js");
 let config = require("../config.json")
 let jwt = require("jsonwebtoken")
+
 function getLoginPage(req,res)
 {
-    if(req.body.logged) res.redirect("/profile")
+
+if(req.body.logged) res.redirect("/profile")
  res.render("login.ejs",{logged:req.body.logged});
 }
 
@@ -82,7 +84,6 @@ async function getReviewPage(req,res)
     if(role!=="admin") res.redirect("/")
 
    let posts =  await postModel.find({ reviewed: false })
-console.log(posts);
     res.render("review.ejs",{posts,logged:req.body.logged});
 }
 
