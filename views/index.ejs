@@ -98,8 +98,11 @@
 
 
       </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
 
 <script>
+
+
 
   let storedTracker = localStorage.getItem("tracker")
   if(storedTracker){
@@ -114,6 +117,8 @@
     setTimeout(function(){
       console.log("Times up");
       localStorage.clear()
+      var audio = new Audio('audio.mp3');
+      audio.play();
     },leftTime*1000)
   }
 
@@ -132,6 +137,16 @@
       
        let bmi= (weight.value/((height.value)*(height.value)));
        bmi = bmi.toFixed(2)
+
+       <%if(logged){%>
+          //api request database current date and bmi store
+          let dateArr = Date().split(" ")
+          let date = dateArr[2] + " "+ dateArr[1] + " " + dateArr[3]
+          axios.post('/api/bmi', {
+               bmi,
+                date
+           })
+          <%}%>
 
        let category;
 
@@ -225,6 +240,8 @@
     setTimeout(function(){
       localStorage.clear()
       console.log("Times up");
+      var audio = new Audio('audio.mp3');
+      audio.play();
     },inputSeconds*1000);
 
 

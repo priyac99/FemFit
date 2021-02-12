@@ -16,7 +16,7 @@ const UserSchema = mongoose.Schema({
   },
 
   bmi:{
-    type: Number,
+    type: Array,
     
   },
   phoneNo:

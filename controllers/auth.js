@@ -9,7 +9,7 @@ function checkAuth(req,res,next)
     if(req.cookies.jwt)
     {
         let {role} = jwt.verify(req.cookies.jwt,config.secretKey);
-        if(role="admin")
+        if(role=="admin")
         {
             req.body.role="admin";
         }
@@ -26,7 +26,7 @@ function checkAuth(req,res,next)
 function checkLogin(req,res,next)
 {   
     if(req.cookies.jwt){
-    let {exp} = jwt.verify(req.cookies.jwt,config.secretKey);
+    let {email,exp} = jwt.verify(req.cookies.jwt,config.secretKey);
 
     if(exp > Date.now()){
         //token is valid, do your stuff
@@ -34,6 +34,7 @@ function checkLogin(req,res,next)
       }
       else
       {
+      req.body.email = email
       req.body.logged = true
          
       }
