@@ -14,7 +14,6 @@
 <body style="background-color:whitesmoke;">
     <%- include('partials/navbar') %>
    
-    <!--" -->
     <div class="container"  >
         <div class="row">
 
@@ -37,30 +36,37 @@
               <div class="card" style="width: 18rem;">
                 <div class="card-body">
                   <h5 class="card-title">BMI Tracker</h5>
-                  <h6 class="card-subtitle mb-2 text-muted" id="bmiText">.....</h6>
+                  <h6 class="card-subtitle mb-2 text-muted" id="bmiText">..........</h6>
                   <form>
                       <input type="number" name="height" id="height" placeholder="Enter Height (in m)">
                       <input type="number" name="weight" id="weight" placeholder="Enter Weight (in Kg)">
                       <input class="mt-2" type="button" id="bmiButton" value="Calculate">
 
                   </form>
-                  <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a> -->
+                </div>
+              </div>
+
+              <div class="card"  style="width: 18rem;" >
+                <div class="card-body">
+                  <h5 class="card-title">Screen Time Tracker</h5>
+                  <h6  id="sleepText" class="card-subtitle mb-2 text-muted">..</h6>
+                  <form >
+                    <input  id="screenTimeInput" type="number" max="59" name="minutes" placeholder="Time in minutes">
+                    <input class="mt-2" id="screenTimeButton" type="button" value="Remind me">
+                  </form>
+            
                 </div>
               </div>
 
               <div class="card"  style="width: 18rem;" >
                 <div class="card-body">
                   <h5 class="card-title">Sleep Buddy</h5>
-                  <h6  id="sleepText" class="card-subtitle mb-2 text-muted" >...</h6>
+                  <h6  id="sleepText" class="card-subtitle mb-2 text-muted">..</h6>
                   <form >
                     <input  id="sleepInput" type="time" name="time" value="22:00">
                     <input id="sleepButton" type="button" value="Doze me off">
                   </form>
-                  <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="card-link">Card link</a>
-                  <a href="#" class="card-link">Another link</a> -->
+            
                 </div>
               </div>
 
@@ -68,9 +74,6 @@
                     <div class="card-body">
                       <h5 class="card-title">Period Tracker</h5>
                       <h6 class="card-subtitle mb-2 text-muted" >Knock! Knock! It's here!</h6>
-                      <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="card-link">Card link</a>
-                      <a href="#" class="card-link">Another link</a> -->
                     </div>
                   </div>
 
@@ -79,28 +82,14 @@
   <div class="card-body">
     <h5 class="card-title" >Sleep Tracker</h5>
     <h6 class="card-subtitle mb-2 text-muted" >Sleep Your Heart Out!</h6>
-    <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a> -->
   </div>
 </div>
 <div class="card" style="width: 18rem;">
     <div class="card-body">
       <h5 class="card-title">Exercise Tracker</h5>
       <h6 class="card-subtitle mb-2 text-muted">Let's get moving!</h6>
-      <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      <a href="#" class="card-link">Card link</a>
-      <a href="#" class="card-link">Another link</a> -->
     </div>
   </div>
-  <!-- <div class="card-body">
-    <h5 class="card-title" >Virtual Health Check-up</h5>
-    <h6 class="card-subtitle mb-2 text-muted" >Sleep Your Heart Out!</h6> -->
-    <!-- <p class="card-text"></p>
-    <a href="#" class="card-link">Get My Fitness Score</a>
-    <a href="#" class="card-link">Predictive Health </a> -->
-  <!-- </div> -->
-  
             
             </div>
      
@@ -112,6 +101,22 @@
 
 <script>
 
+  let storedTracker = localStorage.getItem("tracker")
+  if(storedTracker){
+    storedTracker = JSON.parse(storedTracker)
+
+    let dateArray=Date().split(" ");
+    let currTime=dateArray[4];
+
+    let sec=hmsToSecondsOnly(currTime);
+
+    let leftTime = (storedTracker.trackerTime -( sec - storedTracker.startTime)) 
+    setTimeout(function(){
+      console.log("Times up");
+      localStorage.clear()
+    },leftTime*1000)
+  }
+
   let height=document.getElementById("height");
   let weight=document.getElementById("weight");
   let bmiText=document.getElementById("bmiText");
@@ -119,6 +124,8 @@
   let sleepText=document.getElementById("sleepText");
   let sleepButton=document.getElementById("sleepButton");
   let sleepInput=document.getElementById("sleepInput");
+  let screenTimeButton=document.getElementById("screenTimeButton");
+  let screenTimeInput=document.getElementById("screenTimeInput");
 
   bmiButton.addEventListener("click",function(event)
   {
@@ -129,11 +136,11 @@
        let category;
 
        if(bmi<18.5)
-       category="underWeight";
+       category="You are underweight. Put on some calories!";
        else if(bmi>18.5 && bmi<24.9)
-       category="healthy";
+       category="You are healthy. Going strong!";
        else if(bmi>25 && bmi<29.9)
-       category="overweight";
+       category="Seems like you are overweight. ";
        else
        category="obese";
 
@@ -186,7 +193,45 @@
     sleepText.innerText  = str;
 
   })
-  
+
+  function hmsToSecondsOnly(str) {
+    var p = str.split(':'),
+        s = 0, m = 1;
+
+    while (p.length > 0) {
+        s += m * parseInt(p.pop(), 10);
+        m *= 60;
+    }
+
+    return s;
+}
+
+
+  screenTimeButton.addEventListener("click",function(event)
+  {
+    let time="00:"+screenTimeInput.value+":00";
+
+    let dateArray=Date().split(" ");
+    let startTime=dateArray[4];
+
+    let sec=hmsToSecondsOnly(startTime);
+    let inputSeconds=hmsToSecondsOnly(time);
+
+    let tracker = {startTime: sec, trackerTime: inputSeconds}
+    localStorage.setItem("tracker",JSON.stringify(tracker))
+    console.log(sec);
+    console.log(inputSeconds);
+
+    setTimeout(function(){
+      localStorage.clear()
+      console.log("Times up");
+    },inputSeconds*1000);
+
+
+
+
+
+  })
 
 </script>
 
