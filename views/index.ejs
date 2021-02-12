@@ -72,24 +72,15 @@
 
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
-                      <h5 class="card-title">Period Tracker</h5>
-                      <h6 class="card-subtitle mb-2 text-muted" >Knock! Knock! It's here!</h6>
+                      <h5 class="card-title">Calorie Counter</h5>
+                      <h6 class="card-subtitle mb-2 text-muted" >.....</h6>
+                      <form>
+                        <input type="number" name="weight" placeholder="Weight (in Kgs)">
+                        
+                      </form>
                     </div>
                   </div>
 
-
-   <div class="card" style="width: 18rem;">
-  <div class="card-body">
-    <h5 class="card-title" >Sleep Tracker</h5>
-    <h6 class="card-subtitle mb-2 text-muted" >Sleep Your Heart Out!</h6>
-  </div>
-</div>
-<div class="card" style="width: 18rem;">
-    <div class="card-body">
-      <h5 class="card-title">Exercise Tracker</h5>
-      <h6 class="card-subtitle mb-2 text-muted">Let's get moving!</h6>
-    </div>
-  </div>
             
             </div>
      
@@ -140,8 +131,7 @@
 
        <%if(logged){%>
           //api request database current date and bmi store
-          let dateArr = Date().split(" ")
-          let date = dateArr[2] + " "+ dateArr[1] + " " + dateArr[3]
+          let date = Date.now()
           axios.post('/api/bmi', {
                bmi,
                 date

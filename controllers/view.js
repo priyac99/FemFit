@@ -23,12 +23,13 @@ function getSignUpPage(req,res)
 async function getProfilePage(req,res){
     let {email} = jwt.verify(req.cookies.jwt,config.secretKey);
 
-    console.log(req.body);
     let user = await userModel.findOne({email});
+    let reqBmiArr = user.bmi.filter((el)=>{
+        return el.date > (Date.now() - (30 * 86400))
+    })
 
-    console.log(req.body.role);
-
-    res.render("profile.ejs",{user,logged:req.body.logged,role:req.body.role});
+    reqBmiArr = reqBmiArr.map((el)=>el.bmi)
+    res.render("profile.ejs",{user,logged:req.body.logged,role:req.body.role,bmi:reqBmiArr});
 
 
 }
