@@ -1,5 +1,4 @@
 let userModel=require("../models/user.js");
-let config=require("../config.json");
 let jwt=require('jsonwebtoken');
 
 async function saveBmi(req,res){

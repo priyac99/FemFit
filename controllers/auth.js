@@ -1,5 +1,6 @@
 let userModel=require("../models/user.js");
-let config=require("../config.json");
+// let config=require("../config/config.json");
+
 let jwt=require('jsonwebtoken');
 var CryptoJS = require("crypto-js");
  
@@ -8,7 +9,8 @@ function checkAuth(req,res,next)
  
     if(req.cookies.jwt)
     {
-        let {role} = jwt.verify(req.cookies.jwt,config.secretKey);
+        // let {role} = jwt.verify(req.cookies.jwt,config.secretKey);
+        let {role} = jwt.verify(req.cookies.jwt,process.env.secretKey);
         if(role=="admin")
         {
             req.body.role="admin";
@@ -26,7 +28,8 @@ function checkAuth(req,res,next)
 function checkLogin(req,res,next)
 {   
     if(req.cookies.jwt){
-    let {email,exp} = jwt.verify(req.cookies.jwt,config.secretKey);
+    // let {email,exp} = jwt.verify(req.cookies.jwt,config.secretKey);
+    let {email,exp} = jwt.verify(req.cookies.jwt,process.env.secretKey);
 
     if(exp > Date.now()){
         //token is valid, do your stuff
@@ -56,7 +59,8 @@ function signup(req,res)
         req.body.role ="user";
         let userPassword=req.body.password
 
-       var hashedPassword = CryptoJS.AES.encrypt(userPassword, config.secretKey).toString();
+    //    var hashedPassword = CryptoJS.AES.encrypt(userPassword, config.secretKey).toString();
+       var hashedPassword = CryptoJS.AES.encrypt(userPassword, process.env.secretKey).toString();
        
         req.body.password=hashedPassword;
 
@@ -93,12 +97,14 @@ async function login(req,res)
         let userPassword=req.body.password
 
         //decrypt
-        var bytes  = CryptoJS.AES.decrypt(user.password, config.secretKey);
+        // var bytes  = CryptoJS.AES.decrypt(user.password, config.secretKey);
+        var bytes  = CryptoJS.AES.decrypt(user.password, process.env.secretKey);
         var originalText = bytes.toString(CryptoJS.enc.Utf8);
     
         if(originalText==userPassword) //if passwords match 
         {
-            let token=jwt.sign({email,role:user.role},config.secretKey,{expiresIn:"24h"});
+            // let token=jwt.sign({email,role:user.role},config.secretKey,{expiresIn:"24h"});
+            let token=jwt.sign({email,role:user.role},process.env.secretKey,{expiresIn:"24h"});
             res.cookie("jwt",token);
             res.redirect("/profile")
         }

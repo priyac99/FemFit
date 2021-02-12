@@ -1,12 +1,13 @@
 let postModel=require("../models/post.js");
-let config=require("../config.json");
+// let config=require("../config/config.json");
 let jwt=require('jsonwebtoken');
 
 
 function addPost(req,res)
 {
 
-    let {email} = jwt.verify(req.cookies.jwt,config.secretKey);
+    // let {email} = jwt.verify(req.cookies.jwt,config.secretKey);
+    let {email} = jwt.verify(req.cookies.jwt,process.env.secretKey);
     
     req.body.email=email;
     req.body.reviewed=false;

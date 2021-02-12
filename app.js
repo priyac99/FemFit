@@ -20,8 +20,9 @@ app.use("/api",userRouter);
 app.use(viewRouter);
 app.use("/api",postRouter);
 
+let port = process.env.PORT || 80
 
-app.listen(3000,function()
+app.listen(port,function()
 {
 
     console.log("Server is running");

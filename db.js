@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
-let config=require("./config.json");
-
-let MONGOURI = `mongodb+srv://${config.id}:${config.password}@cluster0.kxfax.mongodb.net/mydb?retryWrites=true&w=majority`;
+// let config=require("./config/config.json");
+let id = process.env.id || config.id
+let password = process.env.password || config.password
+let MONGOURI = `mongodb+srv://${id}:${password}@cluster0.kxfax.mongodb.net/mydb?retryWrites=true&w=majority`;
 
 const InitiateMongoServer = async () => {
   try {

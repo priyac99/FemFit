@@ -1,6 +1,6 @@
 let userModel=require("../models/user.js");
 let postModel=require("../models/post.js");
-let config = require("../config.json")
+// let config = require("../config/config.json")
 let jwt = require("jsonwebtoken")
 
 function getLoginPage(req,res)
@@ -21,7 +21,8 @@ function getSignUpPage(req,res)
 
 
 async function getProfilePage(req,res){
-    let {email} = jwt.verify(req.cookies.jwt,config.secretKey);
+    // let {email} = jwt.verify(req.cookies.jwt,config.secretKey);
+    let {email} = jwt.verify(req.cookies.jwt,process.env.secretKey);
 
     let user = await userModel.findOne({email});
     console.log(user.bmi);
@@ -86,7 +87,8 @@ function addPost(req,res)
 }
 
 async function getReviewPage(req,res)
-{let {role} = jwt.verify(req.cookies.jwt,config.secretKey);
+// {let {role} = jwt.verify(req.cookies.jwt,config.secretKey);
+{let {role} = jwt.verify(req.cookies.jwt,process.env.secretKey);
     if(!req.body.logged) res.redirect("/login")
     if(role!=="admin") res.redirect("/")
 
