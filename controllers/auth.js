@@ -3,7 +3,24 @@ let config=require("../config.json");
 let jwt=require('jsonwebtoken');
 var CryptoJS = require("crypto-js");
  
-
+function checkAuth(req,res,next)
+{
+ 
+    if(req.cookies.jwt)
+    {
+        let {role} = jwt.verify(req.cookies.jwt,config.secretKey);
+        if(role="admin")
+        {
+            req.body.role="admin";
+        }
+        else
+        {
+            req.body.role="user";
+        }
+    }
+    next();
+    
+}
 
 
 function checkLogin(req,res,next)
@@ -113,3 +130,4 @@ module.exports.signup=signup;
 module.exports.login=login;
 module.exports.logout=logout;
 module.exports.checkLogin=checkLogin;
+module.exports.checkAuth=checkAuth;

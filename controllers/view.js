@@ -7,14 +7,16 @@ function getLoginPage(req,res)
 {
 
 if(req.body.logged) res.redirect("/profile")
- res.render("login.ejs",{logged:req.body.logged});
+ res.render("login.ejs",{logged:req.body.logged,role:undefined});
+
+
 }
 
 
 function getSignUpPage(req,res)
 {
     if(req.body.logged) res.redirect("/profile")
-    res.render("signup.ejs",{logged:req.body.logged});
+    res.render("signup.ejs",{logged:req.body.logged,role:undefined});
 }
 
 
@@ -22,8 +24,13 @@ async function getProfilePage(req,res){
     let {email} = jwt.verify(req.cookies.jwt,config.secretKey);
 
     console.log(req.body);
-    let user = await userModel.findOne({email})
-    res.render("profile.ejs",{user,logged:req.body.logged});
+    let user = await userModel.findOne({email});
+
+    console.log(req.body.role);
+
+    res.render("profile.ejs",{user,logged:req.body.logged,role:req.body.role});
+
+
 }
 
 
@@ -33,7 +40,7 @@ async function getEmotionalWall(req,res)
 
    if(posts.length<10)
    {
-    res.render("cheerMeUp.ejs",{posts,logged:req.body.logged});
+    res.render("cheerMeUp.ejs",{posts,logged:req.body.logged,role:req.body.role});
    }
    else
    {
@@ -55,7 +62,7 @@ async function getEmotionalWall(req,res)
 
        }
        
-       res.render("cheerMeUp.ejs",{posts:selectedPosts,logged:req.body.logged});
+       res.render("cheerMeUp.ejs",{posts:selectedPosts,logged:req.body.logged,role:req.body.role});
 
    }
 
@@ -64,18 +71,18 @@ async function getEmotionalWall(req,res)
 
 function getHomePage(req,res)
 {
-    res.render("index.ejs",{logged:req.body.logged});
+    res.render("index.ejs",{logged:req.body.logged,role:req.body.role});
 }
 
 function getPageNotFound(req,res)
 {
-    res.render("notfound.ejs",{logged:req.body.logged});
+    res.render("notfound.ejs",{logged:req.body.logged,role:req.body.role});
 }
 
 function addPost(req,res)
 {
     if(!req.body.logged) res.redirect("/login")
-    res.render("addPost.ejs",{logged:req.body.logged});
+    res.render("addPost.ejs",{logged:req.body.logged,role:req.body.role});
 }
 
 async function getReviewPage(req,res)
@@ -84,7 +91,7 @@ async function getReviewPage(req,res)
     if(role!=="admin") res.redirect("/")
 
    let posts =  await postModel.find({ reviewed: false })
-    res.render("review.ejs",{posts,logged:req.body.logged});
+    res.render("review.ejs",{posts,logged:req.body.logged,role:req.body.role});
 }
 
 

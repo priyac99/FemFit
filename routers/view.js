@@ -4,6 +4,7 @@ let viewController=require("../controllers/view.js");
 let authController=require("../controllers/auth.js");
 
 router.use(authController.checkLogin);
+router.use(authController.checkAuth);
 
 //Sign-up
 router.route("/signup").get(viewController.getSignUpPage)

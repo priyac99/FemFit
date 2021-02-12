@@ -21,7 +21,7 @@
             <div class="col-sm-12 col-md-8">
                 <img src="https://www.thesublimewoman.com/wp-content/uploads/2019/04/Femininity-and-Age-e1554684622145-1000x500.jpg" class="img-fluid mt-4" >
             
-                <div class="card mt-2" style="width: 100%;">
+                <div class="card mt-2" style="width: 100%; background-color:whitesmoke;">
                     <div class="card-body">
                       <h5 class="card-title">We care for you, you should too!</h5>
                       <h6 class="card-subtitle mb-2 text-muted" >DailyCare:</h6>
@@ -32,6 +32,38 @@
 
             </div>
             <div class="col-sm-12 col-md-4 pt-4">
+
+
+              <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">BMI Tracker</h5>
+                  <h6 class="card-subtitle mb-2 text-muted" id="bmiText">.....</h6>
+                  <form>
+                      <input type="number" name="height" id="height" placeholder="Enter Height (in m)">
+                      <input type="number" name="weight" id="weight" placeholder="Enter Weight (in Kg)">
+                      <input class="mt-2" type="button" id="bmiButton" value="Calculate">
+
+                  </form>
+                  <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a> -->
+                </div>
+              </div>
+
+              <div class="card"  style="width: 18rem;" >
+                <div class="card-body">
+                  <h5 class="card-title">Sleep Buddy</h5>
+                  <h6  id="sleepText" class="card-subtitle mb-2 text-muted" >...</h6>
+                  <form >
+                    <input  id="sleepInput" type="time" name="time" value="22:00">
+                    <input id="sleepButton" type="button" value="Doze me off">
+                  </form>
+                  <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a> -->
+                </div>
+              </div>
+
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                       <h5 class="card-title">Period Tracker</h5>
@@ -41,7 +73,9 @@
                       <a href="#" class="card-link">Another link</a> -->
                     </div>
                   </div>
-                  <div class="card" style="width: 18rem;">
+
+
+   <div class="card" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title" >Sleep Tracker</h5>
     <h6 class="card-subtitle mb-2 text-muted" >Sleep Your Heart Out!</h6>
@@ -75,6 +109,86 @@
 
 
       </div>
+
+<script>
+
+  let height=document.getElementById("height");
+  let weight=document.getElementById("weight");
+  let bmiText=document.getElementById("bmiText");
+  let bmiButton=document.getElementById("bmiButton");
+  let sleepText=document.getElementById("sleepText");
+  let sleepButton=document.getElementById("sleepButton");
+  let sleepInput=document.getElementById("sleepInput");
+
+  bmiButton.addEventListener("click",function(event)
+  {
+      
+       let bmi= (weight.value/((height.value)*(height.value)));
+       bmi = bmi.toFixed(2)
+
+       let category;
+
+       if(bmi<18.5)
+       category="underWeight";
+       else if(bmi>18.5 && bmi<24.9)
+       category="healthy";
+       else if(bmi>25 && bmi<29.9)
+       category="overweight";
+       else
+       category="obese";
+
+       console.log(bmi,category);
+       bmiText.innerText  = bmi+" "+category;
+  })
+
+  var convertSeconds = function(sec) {
+            sec=sec%86400;
+            var hrs = Math.floor(sec / 3600);
+            var min = Math.floor((sec - (hrs * 3600)) / 60);
+            var seconds = sec - (hrs * 3600) - (min * 60);
+            seconds = Math.round(seconds * 100) / 100
+           
+            var result = (hrs < 10 ? "0" + hrs : hrs);
+            result += ":" + (min < 10 ? "0" + min : min);
+            return result;
+         }
+
+  
+
+  sleepButton.addEventListener("click",function(event)
+  {
+    let inputTime=sleepInput.value+':00';
+    console.log(inputTime);
+    var a = inputTime.split(':'); // split it at the colons
+
+    var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]); 
+    let times=[];
+
+    for(let i=1;i<=6;i++)
+    {
+      times.push(seconds+i*5400);
+    }
+
+    for(let i=0;i<6;i++)
+    {
+        times[i]=convertSeconds(times[i]);
+    }
+  
+    console.log(times);
+
+    let str = "You should wake up at: \n \n "
+    for(x in times){
+      if(x!=times.length-1)
+      str+=times[x]+" or "
+      else
+      str+=times[x];
+    }
+    sleepText.innerText  = str;
+
+  })
+  
+
+</script>
 
 </body>
 </html>
