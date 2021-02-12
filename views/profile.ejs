@@ -23,22 +23,12 @@
     <p> <b>Phone Number:</b> <%=user.phoneNo%></p>
     <p style="display: none;" id="bmiArr"> <%=bmi%></p>
 
-    <canvas id="myChart"></canvas>
+    <canvas id="myChart" ></canvas>
 <script>
     var ctx = document.getElementById('myChart').getContext('2d');
     let bmiArr = document.querySelector("#bmiArr").innerText.trim().split(",")
     bmiArr = bmiArr.map((el)=>+el)
     console.log(bmiArr);
-
-    let sum=0;
-    for(let i=0;i<bmiArr.length;i++)
-    {
-            sum+=bmiArr[i];
-    }
-
-    let avg=sum/bmiArr.length;
-
-    console.log(avg);
 
     let l = []
     for(let i =1;i<=bmiArr.length;i++)
@@ -64,6 +54,9 @@ var chart = new Chart(ctx, {
     // Configuration options go here
     options: {}
 });
+
+chart.canvas.parentNode.style.height = '40vh';
+chart.canvas.parentNode.style.width = '50%';
 </script>
     </div>
 

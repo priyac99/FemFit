@@ -24,11 +24,10 @@ async function getProfilePage(req,res){
     let {email} = jwt.verify(req.cookies.jwt,config.secretKey);
 
     let user = await userModel.findOne({email});
-    let reqBmiArr = user.bmi.filter((el)=>{
-        return el.date > (Date.now() - (30 * 86400))
-    })
+    console.log(user.bmi);
 
-    reqBmiArr = reqBmiArr.map((el)=>el.bmi)
+    reqBmiArr = user.bmi.map((el)=>el.bmi)
+    console.log(reqBmiArr);
     res.render("profile.ejs",{user,logged:req.body.logged,role:req.body.role,bmi:reqBmiArr});
 
 
